@@ -1,6 +1,6 @@
 # gitlab-ce-ssh-test
 
-- For SDO BloodLine Community.
+- For https://forum.gitlab.com/t/does-the-gitlab-omnibus-config-environment-variable-of-gitlab-ces-dockerimage-allow-writing-json/109478 .
 
 - Execute the following commands under Ubuntu WSL 22.04.4.
   Docker Engine `27.1.1` must be installed in advance.
