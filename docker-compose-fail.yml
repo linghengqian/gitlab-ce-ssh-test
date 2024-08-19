@@ -1,0 +1,62 @@
+services:
+  gitlab-ce:
+    image: gitlab/gitlab-ce:17.3.0-ce.0
+    restart: always
+    hostname: '127.0.0.1'
+    environment:
+      TZ: Asia/Shanghai
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://127.0.0.1:12345'
+        gitlab_rails['time_zone'] = 'Asia/Shanghai'
+        gitlab_rails['gitlab_shell_ssh_port'] = 22345
+        gitlab_rails['initial_root_password'] = "chatToBloodLine666?!"
+        registry_external_url 'http://127.0.0.1:32345'
+        puma['worker_processes'] = 0
+        sidekiq['concurrency'] = 10
+        prometheus_monitoring['enable'] = false
+        
+        gitlab_rails['env'] = {
+          'MALLOC_CONF' => 'dirty_decay_ms:1000,muzzy_decay_ms:1000'
+        }
+
+        gitaly['configuration'] = {
+          concurrency: [
+            {
+              'rpc' => "/gitaly.SmartHTTPService/PostReceivePack",
+              'max_per_repo' => 3,
+            }, {
+              'rpc' => "/gitaly.SSHService/SSHUploadPack",
+              'max_per_repo' => 3,
+            },
+          ],
+          cgroups: {
+            repositories: {
+              count: 2,
+            },
+            mountpoint: '/sys/fs/cgroup',
+            hierarchy_root: 'gitaly',
+            memory_bytes: 500000,
+            cpu_shares: 512,
+          },
+        }
+        gitaly['env'] = {
+          'MALLOC_CONF' => 'dirty_decay_ms:1000,muzzy_decay_ms:1000',
+          'GITALY_COMMAND_SPAWN_MAX_PARALLEL' => '2'
+        }
+    ports:
+      - "22345:22"
+      - "12345:12345"
+      - "32345:32345"
+    volumes:
+      - gitlab-ce-config-directory:/etc/gitlab
+      - gitlab-ce-logs-directory:/var/log/gitlab
+      - gitlab-ce-data-directory:/var/opt/gitlab
+    shm_size: '256m'
+
+volumes:
+  gitlab-ce-config-directory:
+    driver: local
+  gitlab-ce-logs-directory:
+    driver: local
+  gitlab-ce-data-directory:
+    driver: local
