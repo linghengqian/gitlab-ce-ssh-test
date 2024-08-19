@@ -33,6 +33,15 @@ docker compose --file ./docker-compose-success.yml down --volumes
   See https://docs.gitlab.com/17.3/ee/install/docker/#install-gitlab-using-docker-compose
   and https://gitlab.com/gitlab-org/omnibus-gitlab/-/blob/17.3.0+ce.0/files/gitlab-config-template/gitlab.rb.template?ref_type=tags#L698 .
 
+```shell
+# ... Generate SSH key
+cat ~/.ssh/id_ed25519.pub
+# ... Upload the SSH public key to http://localhost:12345/-/user_settings/ssh_keys .
+ssh -T ssh://git@127.0.0.1:22345
+# .. After uploading the project, try to clone it.
+git clone ssh://git@127.0.0.1:22345/linghengqian/gitlab-ce-ssh-test.git
+```
+
 - `gitlab_rails['initial_root_password']` changes the password of the `root` user.
   See https://docs.gitlab.com/17.3/ee/install/docker/#install-gitlab-using-docker-swarm-mode
   and https://gitlab.com/gitlab-org/omnibus-gitlab/-/blob/17.3.0+ce.0/files/gitlab-config-template/gitlab.rb.template?ref_type=tags#L733 .
