@@ -13,6 +13,7 @@ docker compose --file ./docker-compose-success.yml up -d
 ```
 
 - To remove the Docker Compose unit, execute the following command.
+
 ```shell
 docker compose --file ./docker-compose-success.yml down --volumes
 ```
@@ -34,11 +35,18 @@ docker compose --file ./docker-compose-success.yml down --volumes
   and https://gitlab.com/gitlab-org/omnibus-gitlab/-/blob/17.3.0+ce.0/files/gitlab-config-template/gitlab.rb.template?ref_type=tags#L698 .
 
 ```shell
+# Here is a simple test.
+
 # ... Generate SSH key
+
 cat ~/.ssh/id_ed25519.pub
+
 # ... Upload the SSH public key to http://localhost:12345/-/user_settings/ssh_keys .
+
 ssh -T ssh://git@127.0.0.1:22345
+
 # .. After uploading the project, try to clone it.
+cd /tmp/
 git clone ssh://git@127.0.0.1:22345/linghengqian/gitlab-ce-ssh-test.git
 ```
 
@@ -51,11 +59,22 @@ git clone ssh://git@127.0.0.1:22345/linghengqian/gitlab-ce-ssh-test.git
   `ports` exposes the container port of `32345:32345`.
   See https://docs.gitlab.com/17.3/ee/administration/packages/container_registry.html#configure-container-registry-under-an-existing-gitlab-domain .
 
+```shell
+# Here is a simple test.
+
+docker pull apache/hive:4.0.0
+docker tag apache/hive:4.0.0 127.0.0.1:32345/linghengqian/gitlab-ce-ssh-test/apache-hive:4.0.0
+docker login 127.0.0.1:32345
+docker push 127.0.0.1:32345/linghengqian/gitlab-ce-ssh-test/apache-hive:4.0.0
+docker image rm 127.0.0.1:32345/linghengqian/gitlab-ce-ssh-test/apache-hive:4.0.0
+docker pull 127.0.0.1:32345/linghengqian/gitlab-ce-ssh-test/apache-hive:4.0.0
+```
+
 - The following configuration is
   from https://docs.gitlab.com/17.3/omnibus/settings/memory_constrained_envs.html#configuration-with-all-the-changes to
   run in a memory constrained environment.
 
-```shell
+```
 puma['worker_processes'] = 0
 sidekiq['concurrency'] = 10
 prometheus_monitoring['enable'] = false
