@@ -18,7 +18,6 @@ services:
         gitlab_rails['env'] = {
           'MALLOC_CONF' => 'dirty_decay_ms:1000,muzzy_decay_ms:1000'
         }
-
         gitaly['configuration'] = {
           concurrency: [
             {

@@ -5,10 +5,27 @@
 - Execute the following commands under Ubuntu WSL 22.04.4.
   Docker Engine `27.1.1` must be installed in advance.
 
+## Unknown tests
+
 ```shell
 git clone git@github.com:linghengqian/gitlab-ce-ssh-test.git
 cd ./gitlab-ce-ssh-test/
-docker compose --file ./docker-compose-success.yml pull 
+docker compose --file ./docker-compose-unknown.yml pull
+docker compose --file ./docker-compose-unknown.yml up -d
+```
+
+- To remove the Docker Compose unit, execute the following command.
+
+```shell
+docker compose --file ./docker-compose-unknown.yml down --volumes
+```
+
+## Successful unit testing
+
+```shell
+git clone git@github.com:linghengqian/gitlab-ce-ssh-test.git
+cd ./gitlab-ce-ssh-test/
+docker compose --file ./docker-compose-success.yml pull
 docker compose --file ./docker-compose-success.yml up -d
 ```
 
