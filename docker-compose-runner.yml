@@ -1,0 +1,13 @@
+services:
+  gitlab-runner-first:
+    image: gitlab/gitlab-runner:ubuntu-v17.3.0
+    restart: always
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - gitlab-runner-config-first:/etc/gitlab-runner
+
+volumes:
+  gitlab-runner-config-first:
+    driver: local

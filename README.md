@@ -96,3 +96,30 @@ puma['worker_processes'] = 0
 sidekiq['concurrency'] = 10
 prometheus_monitoring['enable'] = false
 ```
+
+## Additional Topics about Runner
+
+- `docker-compose-runner.yml` tests against Gitlab Runner.
+
+```shell
+docker compose --file ./docker-compose-runner.yml pull
+docker compose --file ./docker-compose-runner.yml up -d
+docker compose --file ./docker-compose-runner.yml exec gitlab-runner-first /bin/bash
+
+gitlab-runner register \
+  --non-interactive \
+  --url http://gitlab-ce:12345 \
+  --token <Aloha, your Token> \
+  --executor docker \
+  --docker-image alpine:latest \
+  --description "docker-runner" \
+  --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
+  --clone-url http://gitlab-ce:12345 \
+  --docker-network-mode gitlab-ce-ssh-test_default
+  
+cat /etc/gitlab-runner/config.toml
+
+exit
+
+docker compose --file ./docker-compose-runner.yml down --volumes
+```

@@ -1,0 +1,25 @@
+default:
+  image: docker:27.1.2-dind-alpine3.20
+  before_script:
+    - docker info
+
+stages:
+  - package
+
+test-docker-build:
+  image: docker:27.1.2-dind-alpine3.20
+  tags:
+    - test
+  stage: package
+  script:
+    - docker pull apache/hive:4.0.0
+    - echo "$CI_REGISTRY_PASSWORD" | docker login $CI_REGISTRY -u $CI_REGISTRY_USER --password-stdin
+    - docker tag apache/hive:4.0.0 $CI_REGISTRY_IMAGE/apache-hive:4.0.0
+    - docker tag apache/hive:4.0.0 $CI_REGISTRY_IMAGE/apache-hive:$CI_COMMIT_SHA
+    - docker tag apache/hive:4.0.0 $CI_REGISTRY_IMAGE/apache-hive:latest
+    - docker push $CI_REGISTRY_IMAGE/apache-hive:$CI_COMMIT_SHA
+  rules:
+    - if: '$CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH'
+      when: never
+    - when: always
+      allow_failure: false
