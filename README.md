@@ -1,3 +1,5 @@
+# Verified by https://www.yuque.com/linghengqian/meve2v/fp0f4930g5g0hxg1 .
+
 # gitlab-ce-ssh-test
 
 - For https://forum.gitlab.com/t/does-the-gitlab-omnibus-config-environment-variable-of-gitlab-ces-dockerimage-allow-writing-json/109478 .
